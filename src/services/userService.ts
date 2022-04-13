@@ -1,4 +1,5 @@
 import { compareSync } from 'bcryptjs';
+import { log } from 'console';
 import { ILogin, IModel, IUser } from '../interfaces/userInterface';
 import User from '../models/user';
 import { generateCriptPassword } from '../Utils/bcryptFunctions';
@@ -29,6 +30,8 @@ export default class UserService  {
         const {email, password, username} = data;
         
         const securePassword = generateCriptPassword(password);
+        console.log(securePassword);
+        
 
         const newUser = await User.create({email, password:securePassword, username})
 
