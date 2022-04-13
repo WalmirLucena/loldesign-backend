@@ -1,5 +1,5 @@
-import express from 'express';
-import cors from 'cors';
+import * as express from 'express';
+import * as cors from 'cors';
 import route from './routes';
 
 class App {
@@ -26,7 +26,7 @@ class App {
   }
 
   public start(PORT: string | number):void {
-    this.app.listen(PORT, () => console.log(`Rodando na porta: ${PORT}`));
+    this.app.listen(PORT, () => console.log(`Server running here: ${PORT}`));
   }
 }
 
