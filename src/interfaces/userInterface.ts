@@ -12,8 +12,8 @@ interface IUser extends ILogin{
     email: string
   }
   
-  interface IModel extends IUser{
-    id: string;
+  interface IModel extends IToken{
+    id: number | undefined;
   }
   
   export { IToken, ILogin, IUser, IModel };

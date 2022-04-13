@@ -1,11 +1,11 @@
 import { compareSync } from 'bcryptjs';
-import { createToken } from '../Utils/jwtFunctions';
-import { ILogin } from '../interfaces/userInterface';
+import { ILogin, IModel, IUser } from '../interfaces/userInterface';
 import User from '../models/user';
+import { generateCriptPassword } from '../Utils/bcryptFunctions';
 
 export default class UserService  {
       
-    public static async login (data: ILogin)  {
+    public static async login (data: ILogin): Promise<boolean | IModel>  {
         const { email, password } = data;
       
         const user = await User.findOne({ where: { email } });
@@ -16,18 +16,29 @@ export default class UserService  {
       
         if (!passwordCheck) return false;
       
-        const token = await createToken({ email, username: user.username });
-      
         const userFiltered = {
-          user: {
             id: user.id,
             username: user.username,
             email,
-          },
-          token };
+           };
       
         return userFiltered;
       };
+
+    public static async create (data: IUser) {
+        const {email, password, username} = data;
+        
+        const securePassword = generateCriptPassword(password);
+
+        const newUser = await User.create({email, password:securePassword, username})
+
+        return {
+            id: newUser.id,
+            email,
+            username
+        }
+    }
+
   } 
 
 
