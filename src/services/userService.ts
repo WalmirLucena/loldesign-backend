@@ -40,6 +40,11 @@ export default class UserService  {
         }
     }
 
+    public static async findByName (name: string) {
+        const user = await User.findOne({where: { username: name}})
+        return {id: user?.id}
+    }
+
     public static validate (userInfo: IUser) {
         return userSchema.validate(userInfo);
     }

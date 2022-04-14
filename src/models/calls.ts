@@ -6,7 +6,7 @@ class Call extends Model {
   public origin: number;
   public destiny: number;
   public time: number;
-  public plan?: string;
+  public plan?: number;
   public price: number;
   public priceWithPlan: number;
 
@@ -31,7 +31,7 @@ Call.init({
     allowNull: false,
   },
   plan: {
-    type: DataTypes.STRING,
+    type: DataTypes.NUMBER,
   },
   price: {
     type: DataTypes.NUMBER,

@@ -25,8 +25,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      plane: {
-        type: Sequelize.STRING
+      plan: {
+        type: Sequelize.NUMBER
       },
       price: {
         allowNull: false,
