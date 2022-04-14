@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
+import Call from './calls';
 
 class User extends Model {
   public id?: number;
@@ -35,6 +36,10 @@ User.init({
   sequelize: db,
   modelName: 'users',
   timestamps: false,
+  underscored: true,
 });
+
+User.hasMany(Call, {foreignKey: 'userId', as: 'calls'});
+Call.belongsTo(User, {foreignKey:'userId', targetKey: 'id', as:'users'})
 
 export default User;
