@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/userService';
 import StatusCode from '../Utils/StatusCode';
 
@@ -29,6 +29,17 @@ export default class UserController  {
             return res.status(StatusCode.UNAUTHORIZED)
               .json({ error: `${err}` });
           }
+  }
+
+  public static validate (req: Request, res: Response, next: NextFunction) {
+      const userInfo = req.body;
+      const validation= UserService.validate(userInfo);
+
+      if(validation.error){
+          res.status(500).json({message: validation.error.message})
+      }
+
+      return next()
   }
   
 }

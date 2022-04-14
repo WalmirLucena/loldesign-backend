@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = exports.App = void 0;
 const express = require("express");
 const cors = require("cors");
-const routes_1 = require("./routes");
+const index_1 = require("./routes/index");
 class App {
     constructor() {
         this.app = express();
         this.config();
         this.app.use(cors());
-        this.app.use(routes_1.default);
+        this.app.use(index_1.default);
     }
     config() {
         const accessControl = (_req, res, next) => {
