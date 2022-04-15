@@ -23,4 +23,27 @@ export default class CallController {
                   .json({ error: `${err}` });
         }
     }
+
+    public static async getByName(req: Request,res: Response): Promise<typeof res> {
+        try {
+            const calls = await CallService.getByName(req.body.name);
+            return res.status(StatusCode.OK).json(calls);
+            
+        } catch (err) {
+            return res.status(StatusCode.UNAUTHORIZED)
+                  .json({ error: `${err}` });
+        }
+    }
+
+    public static async delete (req: Request,res: Response): Promise<typeof res> {
+        try {
+            const {id, name } = req.body;
+            const calls = await CallService.delete(id,name);
+            return res.status(StatusCode.OK).json(calls)
+            
+        } catch (err) {
+            return res.status(StatusCode.UNAUTHORIZED)
+                  .json({ error: `${err}` });
+        }
+}
 }

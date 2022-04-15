@@ -38,20 +38,22 @@ export default class CallService  {
           return calls;
       }
 
-      public static async getByName (name:string): Promise<Call>{
+      public static async getByName (name:string): Promise<Call[] | null>{
         const {id} = await UserService.findByName(name);
-        const call = await Call.findOne({ where: {
+        const call = await Call.findAll({ where: {
             userId: id
-        }})
+        }});
+        return call;
 
       }
 
-      public static async delete (id: number): Promise<Call[]> {
+      public static async delete (id: number, name: string): Promise<Call[] | null> {
+
           await Call.destroy({where: {
               id
           }});
-          const calls = await this.read();
-          return calls;
+          const call = await this.getByName(name);
+          return call;
       }
 
 
