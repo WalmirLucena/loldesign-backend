@@ -8,14 +8,8 @@ const planCoverageCheck = ( plan:number, time:number) => {
     } 
 }
 
-
-export const calculatePrice = (data: CallData) => {
-    const {origin, destiny, plan, time} = data;
-
-    let priceMin;
-
-    const {timeDifference, excess}= planCoverageCheck(plan, time);
-
+const definePriceMin = (origin:number, destiny:number) => {
+    let priceMin = 0; 
     if(origin === 11 && destiny === 16){
         priceMin = 1.90;
     }
@@ -31,11 +25,23 @@ export const calculatePrice = (data: CallData) => {
     if(origin === 17){
         priceMin = 2.70;
     }
-    else{
+    if(origin === 18){
         priceMin = 1.90;
     }
+    return priceMin;
+}
 
-    const price = priceMin*timeDifference*excess;
-    const priceWithPlan = priceMin*time;
+
+export const calculatePrice = (data: CallData) => {
+    const {origin, destiny, plan, time} = data;
+
+    const {timeDifference, excess}= planCoverageCheck(plan, time);
+
+    const priceMin = definePriceMin(origin, destiny);
+
+    const price = parseFloat((priceMin*timeDifference*excess).toFixed(2));
+
+    const priceWithPlan = parseFloat((priceMin*time).toFixed(2));
+
     return {price, priceWithPlan};
 }

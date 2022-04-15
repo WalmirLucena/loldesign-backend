@@ -2,6 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import db from '.';
 
 class Call extends Model {
+  public id?: number;
   public userId: number;
   public origin: number;
   public destiny: number;
@@ -13,10 +14,15 @@ class Call extends Model {
 }
 
 Call.init({
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+    },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    primaryKey: true,
   },
   origin: {
     type: DataTypes.INTEGER,

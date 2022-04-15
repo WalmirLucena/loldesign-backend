@@ -2,9 +2,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('calls', {
-      userId: {
+      id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      user_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -26,20 +31,20 @@ module.exports = {
         allowNull: false,
       },
       plan: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       price: {
         allowNull: false,
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
       },
-      priceWithPlan: {
+      price_with_plan: {
         allowNull: false,
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
       }
 
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Calls');
+    await queryInterface.dropTable('calls');
   }
 };

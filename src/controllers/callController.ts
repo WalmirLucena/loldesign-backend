@@ -13,4 +13,14 @@ export default class CallController {
                   .json({ error: `${err}` });
         }
     }
+
+    public static async read (req: Request,res: Response): Promise<typeof res> {
+        try {
+            const calls = await CallService.read();
+            return res.status(StatusCode.OK).json(calls);
+        } catch (err) {
+            return res.status(StatusCode.UNAUTHORIZED)
+                  .json({ error: `${err}` });
+        }
+    }
 }
