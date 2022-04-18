@@ -24,9 +24,10 @@ export default class CallController {
         }
     }
 
-    public static async getByName(req: Request,res: Response): Promise<typeof res> {
+    public static async getById(req: Request,res: Response): Promise<typeof res> {
         try {
-            const calls = await CallService.getByName(req.body.name);
+            const {id} = req.params;
+            const calls = await CallService.getById(+id);
             return res.status(StatusCode.OK).json(calls);
             
         } catch (err) {
@@ -37,8 +38,9 @@ export default class CallController {
 
     public static async delete (req: Request,res: Response): Promise<typeof res> {
         try {
-            const {id, name } = req.body;
-            const calls = await CallService.delete(id,name);
+            const {id} = req.body;
+            const {id: callId} = req.params
+            const calls = await CallService.delete(+callId,id);
             return res.status(StatusCode.OK).json(calls)
             
         } catch (err) {

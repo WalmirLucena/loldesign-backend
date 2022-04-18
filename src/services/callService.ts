@@ -1,4 +1,3 @@
-import { log } from 'console';
 import User from '../models/user';
 import { CallData, ICall } from '../interfaces/callInterface';
 import Call from '../models/calls';
@@ -17,6 +16,7 @@ export default class CallService  {
         const call = await Call.create({userId: userId.id, origin, destiny, time, plan, price, priceWithPlan})                  
       
         const callFiltered = {
+            id: call.id,
             userId: call.userId,
             origin,
             destiny,
@@ -38,21 +38,21 @@ export default class CallService  {
           return calls;
       }
 
-      public static async getByName (name:string): Promise<Call[] | null>{
-        const {id} = await UserService.findByName(name);
+      public static async getById (id:number): Promise<Call[] | null>{
+        const response = await UserService.findById(id);
         const call = await Call.findAll({ where: {
-            userId: id
+            userId: response.id
         }});
         return call;
 
       }
 
-      public static async delete (id: number, name: string): Promise<Call[] | null> {
+      public static async delete (callId: number, userId: number): Promise<Call[] | null> {
 
           await Call.destroy({where: {
-              id
+              id: callId
           }});
-          const call = await this.getByName(name);
+          const call = await this.getById(userId)
           return call;
       }
 

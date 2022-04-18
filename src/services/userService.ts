@@ -28,6 +28,10 @@ export default class UserService  {
 
     public static async create (data: IUser) {
         const {email, password, username} = data;
+
+        const checkUser = await User.findOne({ where: {username}});
+
+        if(checkUser) return false;
         
         const securePassword = generateCriptPassword(password);      
 
@@ -40,8 +44,13 @@ export default class UserService  {
         }
     }
 
+    public static async findById (id: number) {
+        const user = await User.findByPk(id)
+        return {id: user?.id}
+    }
+
     public static async findByName (name: string) {
-        const user = await User.findOne({where: { username: name}})
+        const user = await User.findOne({where: { username: name }})
         return {id: user?.id}
     }
 

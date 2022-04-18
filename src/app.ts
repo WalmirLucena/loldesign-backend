@@ -28,6 +28,10 @@ class App {
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Server running here: ${PORT}`));
   }
+
+  public getApp() {
+    return this.app;
+  }
 }
 
 export { App };

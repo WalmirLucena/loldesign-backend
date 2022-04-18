@@ -3,7 +3,7 @@ import UserController from '../controllers/userController';
 
 const loginRoute = Router();
 
-loginRoute.post('/', UserController.validate,UserController.create);
-loginRoute.get('/', UserController.login);
+loginRoute.post('/create', UserController.validate,UserController.create);
+loginRoute.post('/', UserController.login);
 
 export default loginRoute;

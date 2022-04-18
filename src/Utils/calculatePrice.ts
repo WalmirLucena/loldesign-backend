@@ -19,6 +19,9 @@ const definePriceMin = (origin:number, destiny:number) => {
     if(origin === 11 && destiny === 18){
         priceMin = 0.90;
     }
+    if(origin === 11 && destiny === 11){
+        priceMin = 0.90;
+    }
     if(origin === 16){
         priceMin = 2.90;
     }

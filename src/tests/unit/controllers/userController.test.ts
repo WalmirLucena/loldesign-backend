@@ -1,23 +1,27 @@
 import {expect } from "chai";
 import * as Sinon from "sinon";
-import { createData, loginData, responseLogin, userMock, wrongUser} from "../../mocks/userMock";
-import User from "../../../models/user";
-import UserService from "../../../services/userService";
-import {ILogin} from "../../../interfaces/userInterface";
+import { createData, loginData, responseLogin} from "../../mocks/userMock";
+import { Request, Response } from 'express';
+import UserController from "../../../controllers/userController";
 
-describe("User Service", () => {
+describe("User Controller", () => {
 
     describe('create with correct data', () => {
+        const req = {} as Request;
+        const res = {} as Response;
         before(() => {
-            Sinon.stub(UserService, "create").resolves(responseLogin as any);
+            res.status = Sinon.stub().returns(res);
+            res.json = Sinon.stub().returns(responseLogin);
+            Sinon.stub(UserController, 'create').resolves(responseLogin as any);
         });
 
         after(() => {
             Sinon.restore();
         })
 
-        it("return a new user", async () => {
-            const user = await UserService.create(createData);
+        it("return status 201", async () => {
+            req.body = createData
+            const user = await UserController.create(req,res);
             expect(user).to.be.deep.equal(responseLogin);
         })
 
@@ -25,8 +29,12 @@ describe("User Service", () => {
     })
 
     describe('login with correct data', () => {
+        const req = {} as Request;
+        const res = {} as Response;
         before(() => {
-            Sinon.stub(UserService, "login").resolves(responseLogin as any);
+            res.status = Sinon.stub().returns(res);
+            res.json = Sinon.stub().returns(responseLogin);
+            Sinon.stub(UserController, 'login').resolves(responseLogin as any);
         });
 
         after(() => {
@@ -34,25 +42,9 @@ describe("User Service", () => {
         })
 
         it("return an user from DB", async () => {
-            const data: ILogin = loginData
-            const user = await UserService.login(data);
+            req.body = loginData
+            const user = await UserController.login(req,res);
             expect(user).to.be.deep.equal(responseLogin);
-        })
-    })
-
-    describe('login with wrong data', () => {
-        before(() => {
-            Sinon.stub(UserService, "login").resolves(false);
-        });
-
-        after(() => {
-            Sinon.restore();
-        })
-
-        it("return null from DB", async () => {
-            const data: ILogin = loginData
-            const user = await UserService.login(data);
-            expect(user).to.be.deep.equal(false);
         })
     })
 })

@@ -23,6 +23,8 @@ export default class UserController  {
         try {
             const newUser = await UserService.create(req.body);
 
+            if(!newUser) return res.status(StatusCode.BAD_REQUEST).json({message: 'User already registred'});
+
             return res.status(StatusCode.CREATED).json(newUser)
             
         } catch (err) {
