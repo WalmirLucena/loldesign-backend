@@ -1,0 +1,212 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "API de manipulação de ligações de um cliente",
+      "description": "Essa API tem como objetivo de criar ligações e informar o valor destas",
+      "termsOfService": "http://localhost:4000/terms",
+      "contact": {
+        "email": "walmirlucena3@gmail.com"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [{
+      "url": "http://localhost:4000/",
+      "description": "API de Calls"
+    }],
+    "paths": {
+      "/calls/": {
+        "post": {
+          "summary": "Cria uma Call",
+          "description": "Essa rota será responsável por registrar uma Call no BD",
+          "tags": ["Call"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Call"
+                },
+                "examples": {
+                  "call": {
+                    "value": {
+                      "name": "Admin",
+                      "origin": 11,
+                      "destiny": 16,
+                      "time": 23,
+                      "plan": 60
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "400": {
+              "description": "Email,password,displayName or image is not correct!"
+            },
+            "409": {
+              "description": "User Already Registered"
+            },
+            "500": {
+              "description": "Erro ao salvar o usuário no banco de dados"
+            },
+            "200": {
+              "description": "OK",
+              "contenct": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "token": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "summary": "Login de usuário",
+          "description": "Essa rota será responsável por realizar o login de usuários",
+          "tags": ["Login"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                },
+                "examples": {
+                  "login": {
+                    "value": {
+                      "email": "lewishamilton@gmail.com",
+                      "password": "123456"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "400": {
+              "description": "Email or Password is not correct!"
+            },
+            "409": {
+              "description": "User Already Registered"
+            },
+            "500": {
+              "description": "Request Error"
+            },
+            "200": {
+              "description": "OK",
+              "contenct": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "token": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/user/{id}": {
+        "get": {
+          "summary": "Retorna um usuário",
+          "description": "Essa rota será responsável por retornar um usuário através do id",
+          "tags": ["User"],
+          "security": [{
+            "jwt": []
+          }],
+          "parameters": [{
+            "name": "id",
+            "in": "path",
+            "description": "id de um usuário",
+            "required": true
+          }],
+          "responses": {
+            "400": {
+              "description": "Email,password,displayName or image is not correct!"
+            },
+            "500": {
+              "description": "Erro ao salvar o usuário no banco de dados"
+            },
+            "200": {
+              "description": "OK",
+              "contenct": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "Login": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "Call": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type":"string"
+                },
+                "origin":{
+                    "type": "number"
+                },
+                "destiny":{
+                    "type": "number"
+                },
+                "time":{
+                    "type": "number"
+                },
+                "plan":{
+                    "type": "number"
+                }
+            }
+        },
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "displayName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "securitySchemes": {
+        "jwt": {
+          "type": "http",
+          "scheme": "bearer",
+          "in": "header",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+    
+  }
