@@ -4,7 +4,7 @@ import callRoute from './callRoutes';
 import loginRoute from './userRoutes';
 import swaggerUi = require('swagger-ui-express');
 
-const swaggerFile = (process.cwd()+"/swagger/swagger.json");
+const swaggerFile = (process.cwd()+"/src/swagger.json");
 const swaggerData = fs.readFileSync(swaggerFile, 'utf8');
 const swaggerDocument = JSON.parse(swaggerData);
 

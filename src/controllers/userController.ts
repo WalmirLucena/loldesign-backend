@@ -14,7 +14,7 @@ export default class UserController  {
             
                 return res.status(StatusCode.OK).json(result);
               } catch (err) {
-                return res.status(StatusCode.UNAUTHORIZED)
+                return res.status(StatusCode.INTERNAL_SERVER_ERROR)
                   .json({ error: `${err}` });
               }
       };

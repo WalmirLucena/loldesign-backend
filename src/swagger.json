@@ -3,14 +3,14 @@
     "info": {
       "title": "API de manipulação de ligações de um cliente",
       "description": "Essa API tem como objetivo de criar ligações e informar o valor destas",
-      "termsOfService": "http://localhost:4000/terms",
+      "termsOfService": "http://localhost:4001/terms",
       "contact": {
         "email": "walmirlucena3@gmail.com"
       },
       "version": "1.0.0"
     },
     "servers": [{
-      "url": "http://localhost:4000/",
+      "url": "http://localhost:4001/",
       "description": "API de Calls"
     }],
     "paths": {
@@ -18,7 +18,7 @@
         "post": {
           "summary": "Cria uma Call",
           "description": "Essa rota será responsável por registrar uma Call no BD",
-          "tags": ["Call"],
+          "tags": ["Create Call"],
           "requestBody": {
             "content": {
               "application/json": {
@@ -40,22 +40,15 @@
             }
           },
           "responses": {
-            "400": {
-              "description": "Email,password,displayName or image is not correct!"
+            "401": {
+              "description": "Erro ao salvar a ligação no banco de dados"
             },
-            "409": {
-              "description": "User Already Registered"
-            },
-            "500": {
-              "description": "Erro ao salvar o usuário no banco de dados"
-            },
-            "200": {
-              "description": "OK",
-              "contenct": {
+            "201": {
+              "description": "Created",
+              "content": {
                 "application/json": {
                   "schema": {
-                    "type": "object",
-                    "token": "string"
+                    "type": "object"
                   }
                 }
               }
@@ -77,8 +70,8 @@
                 "examples": {
                   "login": {
                     "value": {
-                      "email": "lewishamilton@gmail.com",
-                      "password": "123456"
+                      "email": "admin@admin.com",
+                      "password": "secret_admin"
                     }
                   }
                 }
@@ -86,11 +79,8 @@
             }
           },
           "responses": {
-            "400": {
-              "description": "Email or Password is not correct!"
-            },
-            "409": {
-              "description": "User Already Registered"
+            "401": {
+              "description": "Incorrect email or password!"
             },
             "500": {
               "description": "Request Error"
@@ -100,8 +90,7 @@
               "contenct": {
                 "application/json": {
                   "schema": {
-                    "type": "object",
-                    "token": "string"
+                    "type": "object"
                   }
                 }
               }
@@ -109,14 +98,52 @@
           }
         }
       },
-      "/user/{id}": {
+      "/login/create":{
+        "post": {
+          "summary":"Cria um Usuário",
+          "description": "Essa rota será responsável pela criação de um usuário",
+          "tags": ["CreateUser"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUser"
+                },
+                "examples": {
+                  "createUser": {
+                    "value": {
+                      "username": "Walmir Lucena",
+                      "password": "123456",
+                      "email": "walmir.lucena@gmail.com"
+                  }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "400": {
+              "description": "User already registred"
+            },
+            "201": {
+              "description": "Created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+
+        }
+      },
+      "/calls/{id}": {
         "get": {
-          "summary": "Retorna um usuário",
-          "description": "Essa rota será responsável por retornar um usuário através do id",
-          "tags": ["User"],
-          "security": [{
-            "jwt": []
-          }],
+          "summary": "Retorna ligações de um usuário",
+          "description": "Essa rota será responsável por retornar as ligações feitas por um usuário através do id",
+          "tags": ["GetById"],
           "parameters": [{
             "name": "id",
             "in": "path",
@@ -124,24 +151,63 @@
             "required": true
           }],
           "responses": {
-            "400": {
-              "description": "Email,password,displayName or image is not correct!"
-            },
-            "500": {
-              "description": "Erro ao salvar o usuário no banco de dados"
+            "401": {
+              "description": "Erro ao procurar as ligações do usuário no banco de dados"
             },
             "200": {
               "description": "OK",
               "contenct": {
                 "application/json": {
                   "schema": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/Call"
                   }
                 }
               }
             }
           }
+        },
+        "delete": {
+          "summary": "Delete uma ligação de um usuário",
+          "description": "Essa rota será responsável por deletar uma ligação feita por um usuário através do id",
+          "tags": ["DeleteById"],
+          "parameters": [{
+            "name": "id",
+            "in": "path",
+            "description": "id de uma call",
+            "required": true
+          }],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteById"
+                },
+                "examples": {
+                  "createUser": {
+                    "value": {
+                      "id": 1
+                  }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "Erro ao procurar ao deletar a Call"
+            },
+            "200": {
+              "description": "OK",
+              "contenct": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Call"
+                  }
+                }
+              }
+            }
+          }
+
         }
       }
     },
@@ -155,6 +221,28 @@
             },
             "password": {
               "type": "string"
+            }
+          }
+        },
+        "CreateUser": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "DeleteById": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
             }
           }
         },
