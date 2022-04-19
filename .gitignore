@@ -1,5 +1,8 @@
-../node_modules.tar.gz
-../build
-../node_modules/
-../.env
-../.nyc_output
+node_modules.tar.gz
+/build
+/node_modules
+/coverage
+.env
+.nyc_output
+deployLol
+node_modules
